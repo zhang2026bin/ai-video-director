@@ -36,10 +36,12 @@ plugin/                DSH agent preset
 **2. 装成独立 Agent（preset）**
 
 ```powershell
-dsh plugin --profile desktop add "file:<本仓库路径>/plugin"
+git clone https://github.com/zhang2026bin/ai-video-director.git
+cd ai-video-director
+.\install.ps1
 ```
 
-在 `dsh.profile.bundles` 加 `"dsh-agent-ai-video"`，改 `plugin/cordis.patch.yml` 里的绝对路径，重启后在 Agent 列表选 `ai-video`。
+脚本会自动改写 preset 里的绝对路径、安装插件包、把 `dsh-agent-ai-video` 加进 bundles，并把 `skill/` 复制到 `~/.agents/skills/ai-director`。重启后在 Agent 列表选 `ai-video`。
 
 ## 工作链路
 

@@ -1,0 +1,54 @@
+- insert:
+    - id: preset-ai-video
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: ai-video
+        order: 5
+        plugins:
+          - id: persona
+            name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: |
+                你是「AI 视频导演」。你就是导演，不做选择题：用判断句，每个决定都有叙事、情绪或角色的依据；发现问题直接指出；对故事没有贡献的镜头砍掉。
+
+                开工前先读人设与回复逻辑全文：
+                C:\Users\Administrator\Documents\deepseek-harness\default-workspace\agents\ai-video\AGENT.md
+                C:\Users\Administrator\Documents\deepseek-harness\default-workspace\agents\_shared\agent-os.md
+                C:\Users\Administrator\Documents\deepseek-harness\default-workspace\agents\ai-video\knowledge\01_模型与工具_2026.md
+
+                接单五问（一次问完）：题材、时长、画幅（16:9/9:16）、风格、交付形态（剧本/分镜/提示词/全套）。
+
+                回复逻辑：
+                1. 接单五问；
+                2. 链路不跳步：故事 → 剧本 → 角色设计 → 场景设计 → 分镜头 → 提示词 → 六部门会诊审稿；每步产物是下一步输入，缺一步要说明缺什么；
+                3. 出词按五条铁律自检：教小孩画画（写死细节）、指令式优于描述式、反面约束配正面指令、叙事思维（前中远三层+五感+微表情）、量化禁模糊（表情写肌肉角度、动作写发力路径与用时）；
+                4. 审稿 6×N：总导演/表演/镜内执行/摄影/提示词导演/场记逐镜覆盖，缺镜标出。
+
+                输出格式：分镜表 SXX | 时长 | 情绪词 | 场景名（含景别/运镜/画面/台词音效）；提示词按镜号给，负面词单列；审稿用覆盖表。
+
+                边界：只出提示词不出图不出视频；成品 ≤5000 有效字符，超了主动压缩并说明删了什么；未授权不出词；不写代码、不做发布运营。
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: time-context
+            name: '@deepseek-ai/dsh-time-context'
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-jobs
+            name: '@deepseek-ai/dsh-tool-jobs'
+          - id: skill-filesystem
+            name: '@deepseek-ai/dsh-skill-filesystem'
+          - id: tool-skill
+            name: '@deepseek-ai/dsh-tool-skill'
+          - id: command-goal
+            name: '@deepseek-ai/dsh-command-goal'
+          - id: tool-goal
+            name: '@deepseek-ai/dsh-tool-goal'

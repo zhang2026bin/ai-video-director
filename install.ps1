@@ -15,6 +15,7 @@ if (-not (Test-Path $patch)) { throw "找不到 $patch" }
 Copy-Item $patch "$patch.bak" -Force
 $text = Get-Content $patch -Raw -Encoding UTF8
 $text = [regex]::Replace($text, '[A-Za-z]:\\[^\r\n]*?\\agents\\ai-video\\', ($agentDir.TrimEnd('\') + '\'))
+$text = [regex]::Replace($text, '[A-Za-z]:\\[^\r\n]*?\\agents\\_shared\\', ((Join-Path $repo 'agent\_shared').TrimEnd('\') + '\'))
 $enc = New-Object System.Text.UTF8Encoding($false)
 [IO.File]::WriteAllText($patch, $text, $enc)
 Write-Host "[1/3] 已改写 preset 路径 -> $agentDir"

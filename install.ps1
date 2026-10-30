@@ -18,7 +18,7 @@ $text = [regex]::Replace($text, '[A-Za-z]:\\[^\r\n]*?\\agents\\ai-video\\', ($ag
 $text = [regex]::Replace($text, '[A-Za-z]:\\[^\r\n]*?\\agents\\_shared\\', ((Join-Path $repo 'agent\_shared').TrimEnd('\') + '\'))
 $enc = New-Object System.Text.UTF8Encoding($false)
 [IO.File]::WriteAllText($patch, $text, $enc)
-Write-Host "[1/3] 已改写 preset 路径 -> $agentDir"
+Write-Host "[1/4] 已改写 preset 路径 -> $agentDir"
 
 # 2. 安装插件包
 if (-not (Get-Command dsh -ErrorAction SilentlyContinue)) {
@@ -26,7 +26,7 @@ if (-not (Get-Command dsh -ErrorAction SilentlyContinue)) {
 }
 & dsh plugin --profile $Profile add "file:$(Join-Path $repo 'plugin')"
 if ($LASTEXITCODE -ne 0) { throw "dsh plugin add 失败" }
-Write-Host "[2/3] 插件包已安装"
+Write-Host "[2/4] 插件包已安装"
 
 # 3. 加入 profile 的 bundle 列表
 $profileJson = Join-Path $env:USERPROFILE ".dsh\profiles\$Profile\package.json"
@@ -35,12 +35,12 @@ if (Test-Path $profileJson) {
     if ($data.dsh.profile.bundles -notcontains $package) {
         $data.dsh.profile.bundles = @($data.dsh.profile.bundles) + $package
         [IO.File]::WriteAllText($profileJson, ($data | ConvertTo-Json -Depth 10), $enc)
-        Write-Host "[3/3] 已加入 bundles: $package"
+        Write-Host "[3/4] 已加入 bundles: $package"
     } else {
-        Write-Host "[3/3] bundles 已包含 $package"
+        Write-Host "[3/4] bundles 已包含 $package"
     }
 } else {
-    Write-Host "[3/3] 未找到 $profileJson，请手动把 $package 加进 dsh.profile.bundles"
+    Write-Host "[3/4] 未找到 $profileJson，请手动把 $package 加进 dsh.profile.bundles"
 }
 
 # 4. 可选：安装技能
